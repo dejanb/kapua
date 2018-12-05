@@ -21,7 +21,7 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static io.vertx.core.Vertx.vertx;
+import io.vertx.core.Vertx;
 
 @RunWith(VertxUnitRunner.class)
 public class ApplicationTest {
@@ -36,7 +36,7 @@ public class ApplicationTest {
         config.setUsername("hono-client@HONO");
         config.setPassword("secret");
         config.setRequestTimeout(2000);
-        honoClient = new HonoClientImpl(vertx(), config);
+        honoClient = new HonoClientImpl(Vertx.vertx(), config);
 
         final Async testComplete = ctx.async();
 
