@@ -55,7 +55,6 @@ public class UserDAO extends ServiceDAO {
             e.printStackTrace();
         }
 
-
         return ServiceDAO.create(em, userImpl);
     }
 

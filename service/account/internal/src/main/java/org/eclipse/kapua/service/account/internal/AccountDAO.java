@@ -62,7 +62,6 @@ public class AccountDAO {
         accountImpl.setEntityAttributes(accountCreator.getEntityAttributes());
         accountImpl.setExpirationDate(accountCreator.getExpirationDate());
 
-
         return ServiceDAO.create(em, accountImpl);
     }
 

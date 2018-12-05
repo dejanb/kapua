@@ -25,6 +25,7 @@
     <properties>
         <hono.version>0.8-SNAPSHOT</hono.version>
         <start-class>org.eclipse.kapua.hono.application.KapuaApplication</start-class>
+        <jar-name>${artifactId}-${version}.jar</jar-name>
     </properties>
 
     <build>
@@ -161,6 +162,50 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>kapua/hono-integration</name>
+                            <build>
+                                <from>openjdk:11-jre-slim</from>
+                                <labels>
+                                    <implemented.api.1>Authentication</implemented.api.1>
+                                </labels>
+                                <ports>
+                                    <port>5671</port>
+                                    <port>5672</port>
+                                </ports>
+                                <cmd>
+                                    <exec>
+                                        <arg>java</arg>
+                                        <arg>-jar</arg>
+                                        <arg>/opt/hono/${jar-name}</arg>
+                                    </exec>
+                                </cmd>
+                                <assembly>
+                                    <mode>dir</mode>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.build.directory}</directory>
+                                                <outputDirectory>opt/hono</outputDirectory>
+                                                <includes>
+                                                    <include>${jar-name}</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
             </plugin>
         </plugins>
     </build>
